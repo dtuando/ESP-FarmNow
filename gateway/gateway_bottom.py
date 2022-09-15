@@ -51,7 +51,7 @@ def get_temp():
     sleep(1)
     for i in sensors:
         e.send(i, 'sleep')
-    
+        mqtt_msg.clear()
 ########################################
 
 print('Initializing...')
