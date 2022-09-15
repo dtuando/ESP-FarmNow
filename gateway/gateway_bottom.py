@@ -62,20 +62,3 @@ e.on_recv(recv_cb, e)
 while True:
     check_nodes()
     sleep(10)
-    
-sleep(5)
-for i in mqtt_msg:
-    uart1.write(i)
-    print('Sending mqtt msg: ' + i)
-    sleep(1)
-
-sleep(1)
-print('Sending Sleep MSG')
-sleep(1)
-for i in sensors:
-    e.send(i, 'sleep')
-
-sleep(5)
-e.active(False)
-print('Going to sleep...')
-deepsleep(40000)
