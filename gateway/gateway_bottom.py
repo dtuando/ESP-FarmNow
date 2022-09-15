@@ -2,9 +2,14 @@ import network, ubinascii, espnow
 from time import sleep
 from machine import UART, deepsleep
 
-uart1 = UART(2, baudrate=115200, tx=17, rx=16)
-uid = 'GW-1'
+uart_tx = 17
+aurt_rx = 16
 sensors = [b'\xaa\xaa\xaa\xaa\xaa\xaa', b'\xbb\xbb\xbb\xbb\xbb\xbb', b'\xcc\xcc\xcc\xcc\xcc\xcc', b'\xdd\xdd\xdd\xdd\xdd\xdd']
+
+
+uart1 = UART(2, baudrate=115200, tx=uart_tx, rx=uart_rx)
+uid = 'GW-1'
+
 count = 0
 
 mqtt_msg = []
@@ -25,14 +30,38 @@ def recv_cb(e):
     if msg:
         mqtt_msg.append(msg.decode('utf-8'))
 
+def check_nodes():
+    print('Sending ping...')
+    for i in sensors:
+        if not e.send(i, b'ping'):
+          print('Ping failed!')
+        else:
+            get_temp()
+            sleep(10)
+          
+def get_temp():
+    for i in sensors:
+        e.send(i, 'temp')
+    sleep(5)
+    for i in mqtt_msg:
+        uart1.write(i)
+        print('Sending mqtt msg: ' + i)
+        sleep(1)
+    print('Sending Sleep MSG')
+    sleep(1)
+    for i in sensors:
+        e.send(i, 'sleep')
+    
+########################################
+
 print('Initializing...')
 sleep(5)
 
 e.on_recv(recv_cb, e)
 
-for i in sensors:
-    e.send(i, 'temp')
-
+while True:
+    check_nodes()
+    sleep(10)
     
 sleep(5)
 for i in mqtt_msg:
