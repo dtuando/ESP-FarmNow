@@ -6,6 +6,7 @@ uart_tx = 17
 aurt_rx = 16
 sensors = [b'\xaa\xaa\xaa\xaa\xaa\xaa', b'\xbb\xbb\xbb\xbb\xbb\xbb', b'\xcc\xcc\xcc\xcc\xcc\xcc', b'\xdd\xdd\xdd\xdd\xdd\xdd']
 
+########################################
 
 uart1 = UART(2, baudrate=115200, tx=uart_tx, rx=uart_rx)
 uid = 'GW-1'

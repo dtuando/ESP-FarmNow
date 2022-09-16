@@ -7,7 +7,7 @@ from time import sleep, sleep_ms
 zone = "1"
 uid = "Node_1"
 temp =  ""
-gateways = [b'\xaa\xaa\xaa\xaa\xaa\xaa']
+gateways = [b'\xff\xff\xff\xff\xff\xff']
 tempsensor = Pin(14)
 
 #Advanced Settings
@@ -48,10 +48,9 @@ def irq_cb(code, data):
             send_temp()
         elif 'sleep' in msg.decode('utf-8'):
             e.active(False)
-            sta.active(False)                 # Disable the wifi before sleep
+            sta.active(False)
             print('Going to sleep...')
-            sleep(3)
-            deepsleep(25000)   
+            deepsleep(300000)   
 
 #initilize
 mac = ubinascii.hexlify(network.WLAN(network.STA_IF).config('mac'),':').decode()
