@@ -5,7 +5,7 @@ from time import sleep, sleep_ms
 
 #CHANGE THESE SETTINGS
 zone = "1"
-uid = "Node_5"
+uid = "Node_1"
 temp =  ""
 bcast = b'\xff' * 6
 tempsensor = Pin(14)
@@ -29,6 +29,7 @@ def get_data(uid,temp):
 
 def get_temp():
     roms = ds.scan()
+    #print(roms)
     ds.convert_temp()
     sleep_ms(750)
     for rom in roms:
@@ -50,6 +51,11 @@ print('Initializing...')
 sleep(5)
 while True:
     send_temp()
-    print('Going to sleep')
-    sleep(5)
-    deepsleep(300000)
+    sleep(2)
+    if get_temp() <= 39:
+        print('going to sleep for 2 minutes.')
+        deepsleep(120000)
+    else:
+        print('going to sleep for 20 minutes.')
+        deepsleep(1200000)
+        
